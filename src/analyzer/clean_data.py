@@ -24,12 +24,20 @@ def clean_data(df):
     df['bathrooms'] = pd.to_numeric(df['bathrooms'], errors='coerce').fillna(0)
     df['bedrooms'] = pd.to_numeric(df['bedrooms'], errors='coerce').fillna(0)
 
+    # Convert all the "string" columns to an actual string type
+    df['listing_type'] = df['listing_type'].astype(str)
+    df['sale_rent'] = df['sale_rent'].astype(str)
+    df['title'] = df['title'].astype(str)
+    df['banner'] = df['banner'].astype(str)
+
     # Remove rows where the price is equal to 0
     df = remove_rows_by_criteria(df, lambda d: d['price'] == 0)
     # Remove row where both the land size and floor size are equal to 0
     df = remove_rows_by_criteria(df, lambda d: (d['land_size'] == 0) & (d['floor_size'] == 0))
-    # Remove rows where the listing type is 'Other'
-    df = remove_rows_by_criteria(df, lambda d: d['listing_type'] == 'Other')
+    # Remove rows where the 'floor size' is more than 85 or the 'land size' is more than 85
+    df = remove_rows_by_criteria(df, lambda d: (d['floor_size'] > 85)|(df['land_size'] > 85))
+    # Remove rows where the listing type is 'Other' and 'House'
+    df = remove_rows_by_criteria(df, lambda d: (d['listing_type'] == 'Other')|(d['listing_type'] == 'House'))
     # Remove rows where both land size and floor size are 'No land size found' and 'No floor size found'
     df = remove_rows_by_criteria(df, 
                                  lambda d: (d['land_size'] == 'No land size found') & 
@@ -37,31 +45,13 @@ def clean_data(df):
     # Remove rows where the banner is 'Under Offer' or 'Sold'
     df = remove_rows_by_criteria(df, lambda d: (d['banner'] == 'Under Offer') | 
                                             (d['banner'] == 'Sold'))
+    # Remove rows where the sale_rent is 'Sale'
+    df = remove_rows_by_criteria(df, lambda d: d['sale_rent'] == 'Sale')
     
     # Remove rows where the price is greater than 2,000,000
-    # Remove rows where the price is greater than 25,000 and the sale type is 'Rent'
+    # Remove rows where the price is greater than 25,000 
     df = remove_rows_by_criteria(df, lambda d: d['price'] > 2000000)
-    df = remove_rows_by_criteria(df, lambda d: (d['price'] > 25000)&(d['sale_rent'] == 'Rent'))
+    df = remove_rows_by_criteria(df, lambda d: (d['price'] > 25000))
     
     return df
 
-def filter_data(df):
-    """
-    Filters the DataFrame based on specific criteria.
-    
-    Args:
-        df (pd.DataFrame): The DataFrame to filter.
-    
-    Returns:
-        pd.DataFrame: The filtered DataFrame.
-    """
-    # Filters out based on specific criteria (Hard coded for my needs)
-    # Filter out rows where the price is greater than 2,000,000
-    df = remove_rows_by_criteria(df, lambda d: d['price'] > 2000000)
-    # Filter out rows where the price is greater than 25,000 and the sale type is 'Rent'
-    df = remove_rows_by_criteria(df, lambda d: (d['price'] > 25000)&(d['sale_rent'] == 'Rent'))
-
-    
-    return df
-
-#show(df())

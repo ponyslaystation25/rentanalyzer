@@ -29,4 +29,5 @@ def remove_rows_by_criteria(df: pd.DataFrame, criteria) -> pd.DataFrame:
         pd.DataFrame: The filtered DataFrame.
     """
     mask = criteria(df)
+    print(df)
     return df[~mask]

@@ -1,4 +1,4 @@
-from clean_data import clean_data, filter_data
+from clean_data import clean_data
 from csv_utils import read_csv, remove_rows_by_criteria
 import pandas as pd
 import math
@@ -9,7 +9,6 @@ from pandasgui import show
 def read_and_clean_data():
     df = read_csv('C:\\Users\\zanes\\OneDrive\\Desktop\\Application_data\\listings.csv')
     df = clean_data(df)
-    df = filter_data(df)
     return df
 
 # Calculates the price per square meter
@@ -28,10 +27,9 @@ def calculate_price_per_m2(df):
 # title_type_counts = df.groupby(['title', 'sale_rent']).size().reset_index(name='count')
 def get_rent_per_m2_stats(df):
     
-    # Filter only the listings that are to rent
-    rent_df = df[df['sale_rent'] == 'Rent']
+    #show(df)
     # Calculate the mean and stddev of rent per m2 per title
-    rent_per_m2_stats = rent_df.groupby('title')['price per m2'].agg(['mean', 'max', 'min', 'std']).reset_index()
+    rent_per_m2_stats = df.groupby('title')['price per m2'].agg(['mean', 'max', 'min', 'std']).reset_index()
     # Rename the columns
     rent_per_m2_stats.rename(columns={'mean': 'mean rent per m2', 'max': 'max rent per m2', 'min': 'min rent per m2', 'std': 'stddev rent per m2'}, inplace=True)
     # Sort values by mean rent per m2
@@ -39,7 +37,7 @@ def get_rent_per_m2_stats(df):
     # Remove entries where stddev rent per m2 is NaN
     rent_per_m2_stats = rent_per_m2_stats.dropna(subset=['stddev rent per m2'])
     # Calculate the count of rental listings per title
-    rent_counts = rent_df['title'].value_counts().reset_index(name='rental_count')
+    rent_counts = df['title'].value_counts().reset_index(name='rental_count')
     # Merge the rental counts with the rent per m2 stats
     rent_per_m2_stats = rent_per_m2_stats.merge(rent_counts, on='title', how='left')
     return rent_per_m2_stats
@@ -154,6 +152,8 @@ def calculate_price_to_earnings_ratio(price, annual_gross_rent_income):
 def analyze(csv_path = 'C:\\Users\\zanes\\OneDrive\\Desktop\\Application_data\\listings.csv'):
     # Read and clean the data
     df = read_and_clean_data()
+    # Show the cleaned data
+    #show(df)
     # Calculate price per m2
     df = calculate_price_per_m2(df)
     # Get rent per m2 stats
@@ -164,4 +164,4 @@ def analyze(csv_path = 'C:\\Users\\zanes\\OneDrive\\Desktop\\Application_data\\l
 
 if __name__ == "__main__":
     df, rent_per_m2_stats = analyze()
-    show(rent_per_m2_stats)
+    
