@@ -3,7 +3,7 @@ from csv_utils import read_csv, remove_rows_by_criteria
 import pandas as pd
 import math
 import numpy as np
-from pandasgui import show
+#from pandasgui import show
 
 # Read in the CSV file and clean the data
 def read_and_clean_data():

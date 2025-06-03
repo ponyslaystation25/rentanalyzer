@@ -1,5 +1,5 @@
 from csv_utils import read_csv, remove_rows_by_criteria
-from pandasgui import show
+#from pandasgui import show
 import pandas as pd
  
 def clean_data(df):
