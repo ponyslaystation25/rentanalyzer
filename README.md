@@ -1,11 +1,13 @@
 The goal of this application is to provide users with a comprehensive tool for assessing real estate properties and determining their investment potential. By analyzing key financial metrics and property data, the application helps users make informed decisions about whether a property is a worthwhile investment.
 
+It is worth noting that this application uses the output of the **'Webscraper'** application as an input.
+
 ## Application Overview
 
-The main entry point of the application is the `run_gui.py` file. This script launches a graphical user interface (GUI) built with Tkinter, offering an intuitive way for users to interact with the tool. Through the GUI, users can:
+The main entry point of the application is the `run_gui.py` file. This script launches a graphical user interface (GUI) built with Tkinter. Through the GUI, users can:
 
 - View a summary of previously analyzed properties, including relevant financial and property details.
-- Input information about a new property they are interested in, such as purchase price, expected rent, expenses, and other relevant data.
+- Input information about a new property they are interested in, such as the area, purchase price, and square meters.
 - Receive calculated metrics based on their input, such as cash flow, return on investment (ROI), cap rate, and other indicators commonly used in real estate analysis.
 
 While the application provides detailed calculations and displays the results clearly, the final decision on whether a property is a good investment remains with the user. The tool is designed to assist and inform, not to make investment decisions automatically.
