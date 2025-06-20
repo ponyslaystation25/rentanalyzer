@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 import pandas as pd
 import run_analyzer
 
@@ -31,7 +31,7 @@ def run_gui():
     # Create the main application window
     root = tk.Tk()
     root.title("Property Analyzer")
-    root.geometry("1200x800")  # Set a fixed size for the window
+    root.geometry("1300x850")  # Set a fixed size for the window
     root.resizable(False, False)  # Disable resizing
     #root.iconbitmap('src/analyzer/icon.ico')  # Set the icon for the window
     
@@ -65,8 +65,24 @@ def run_gui():
     # Add a separator before results
     #ttk.Separator(left_frame, orient='horizontal').pack(fill='x', pady=10)
     # Add a Text widget for displaying results
-    result_textbox = tk.Text(left_frame, width=70, height=20, font=("Consolas", 11),bg="#f9f9f9", relief="groove", bd=2 )
-    result_textbox.pack(pady=(10, 10))
+    result_textbox = tk.Text(left_frame, width=80, height=20, font=("Consolas", 11),bg="#f9f9f9", relief="groove", bd=2 )
+    result_textbox.pack(pady=(15, 15))
+
+    def save_note():
+        note = result_textbox.get("1.0", tk.END).strip()
+        if not note:
+            messagebox.showinfo("No Content", "There is nothing to save.")
+            return
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
+            title="Save Note"
+        )
+        if file_path:
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(note)
+            messagebox.showinfo("Saved", f"Note saved to {file_path}")
+
 
     # Function to run when button is clicked
     def run_income_approach():
@@ -86,7 +102,7 @@ def run_gui():
             # Display results (for example, in a popup)
             result_text = (
                 f" \n"
-                f"Results for {title} at a price of {price:.2f}:\n"
+                f"Results for {title} with a size of {floor_size:.2f} at a price of {price:.2f}:\n"
                 f"Monthly Gross Rent Income: {results[0]:,.2f}\n"
                 f"Monthly Gross Rent Income Stddev: {results[1]:,.2f}\n"
                 f"Annual Gross Rent Income: {results[2]:,.2f}\n"
@@ -104,6 +120,10 @@ def run_gui():
     # Add the button to run the calculation
     income_button = ttk.Button(left_frame, text="Calculate Metrics", command=run_income_approach)
     income_button.pack(pady=(0, 20))
+
+    # Add a button to save the results
+    save_button = ttk.Button(left_frame, text="Save Note", command=save_note)
+    save_button.pack(pady=(0, 10))
 
     # --- Scrollable right frame setup ---
     right_canvas = tk.Canvas(root, width =600)

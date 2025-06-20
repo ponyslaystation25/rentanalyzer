@@ -35,7 +35,7 @@ def clean_data(df):
     # Remove row where both the land size and floor size are equal to 0
     df = remove_rows_by_criteria(df, lambda d: (d['land_size'] == 0) & (d['floor_size'] == 0))
     # Remove rows where the 'floor size' is more than 85 or the 'land size' is more than 85
-    df = remove_rows_by_criteria(df, lambda d: (d['floor_size'] > 85)|(df['land_size'] > 85))
+    # df = remove_rows_by_criteria(df, lambda d: (d['floor_size'] > 85)|(df['land_size'] > 85))
     # Remove rows where the listing type is 'Other' and 'House'
     df = remove_rows_by_criteria(df, lambda d: (d['listing_type'] == 'Other')|(d['listing_type'] == 'House'))
     # Remove rows where both land size and floor size are 'No land size found' and 'No floor size found'
@@ -43,15 +43,13 @@ def clean_data(df):
                                  lambda d: (d['land_size'] == 'No land size found') & 
                                             (d['floor_size'] == 'No floor size found'))
     # Remove rows where the banner is 'Under Offer' or 'Sold'
-    df = remove_rows_by_criteria(df, lambda d: (d['banner'] == 'Under Offer') | 
-                                            (d['banner'] == 'Sold'))
+    # df = remove_rows_by_criteria(df, lambda d: (d['banner'] == 'Under Offer') | 
+    #                                        (d['banner'] == 'Sold'))
     # Remove rows where the sale_rent is 'Sale'
     df = remove_rows_by_criteria(df, lambda d: d['sale_rent'] == 'Sale')
     
-    # Remove rows where the price is greater than 2,000,000
     # Remove rows where the price is greater than 25,000 
-    df = remove_rows_by_criteria(df, lambda d: d['price'] > 2000000)
-    df = remove_rows_by_criteria(df, lambda d: (d['price'] > 25000))
+    # df = remove_rows_by_criteria(df, lambda d: (d['price'] > 25000))
     
     return df
 
